@@ -118,6 +118,7 @@
         max-width: 69.6rem;
         z-index: 10;
         border-radius: 1.5rem;
+        cursor: none;
     }
     &__vector{
         position: absolute;
@@ -128,6 +129,32 @@
         filter: blur(10rem);
         z-index: -1;
     }
+}
+
+#custom-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    top: 0;
+    visibility: hidden;
+}
+#custom-cursor-close {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    top: 0;
+    visibility: hidden;
+}
+
+.blacked{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    z-index: -999;
+    background-color: #000000;
 }
 
 @media (max-width: 1100px) {

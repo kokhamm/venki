@@ -15,6 +15,7 @@ body{
     background-color: $black;
     line-height: 24px;
     overflow-x: hidden;
+    visibility: visible;
 }
 button{
     border: none;
@@ -74,6 +75,10 @@ a{
     color: $green;
 }
 
+.green-gradi-span{
+    color: $green;
+}
+
 .green-gradi{
     background: radial-gradient(1627.18% 53.29% at 82.37% 27.5%, #19C5FB 0%, #0CC7BC 100%);
     -webkit-background-clip: text;
@@ -89,7 +94,7 @@ a{
 }
 
 .upheader{
-    color: $gray-darker;
+    color: #2f2f2f;
     text-align: center;
     font-family: 'Rubik', sans-serif;
     font-size: 22px;

@@ -48,7 +48,7 @@
             transform: translateY(100%);
         }
         &:hover{
-            background: rgba(12, 199, 188, 0.10);
+            background: rgba(12, 199, 186, 0.202);
         }
         &.signup__clicked::before{
             bottom: 50%;
@@ -69,7 +69,7 @@
     overflow: hidden;
     z-index: 10;
     &:hover{
-        background: #019F96;
+        background: #007872;
     }
     &::before{
         content: '';

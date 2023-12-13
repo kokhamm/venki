@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
     gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollToPlugin);
+
 
     gsap.from('.header',{
         opacity: 0,
@@ -75,30 +77,6 @@ document.addEventListener('DOMContentLoaded', function(){
             pin: '.benefits',
         }
     });
-    // Закріплення ('pin') секції '.setup'
-    ScrollTrigger.create({
-        trigger: '.setup',
-        start: '20% top',
-        end: '80%',
-        scrub: 3, // Збільшено час "scrub"
-        pin: true,
-    });
-    
-    gsap.utils.toArray('.setup__item').forEach((item, index, array) => {
-        ScrollTrigger.create({
-            trigger: item,
-            start: '30% center',
-            end: () => `+=${item.offsetHeight * 2}`, // Збільшено відстань між start і end
-            onEnter: () => updateClasses(index),
-            onEnterBack: () => updateClasses(index),
-            // markers: true,
-        });
-    });
-    function updateClasses(activeIndex) {
-        gsap.utils.toArray('.setup__item').forEach((item, index) => {
-            item.classList.toggle('setup__item-active', index === activeIndex);
-        });
-    }
     gsap.from('.cases__item',{
         opacity: 0,
         stagger: 0.3,
@@ -142,7 +120,17 @@ document.addEventListener('DOMContentLoaded', function(){
         duration: 0.7,
         scrollTrigger: {
             trigger: '.cta__ani',
-            start: 'top 60%',
+            start: 'top 80%',
+        }
+    });
+    gsap.from('.last-cta__ani',{
+        opacity:0,
+        y:150,
+        stagger: 0.3,
+        duration: 0.7,
+        scrollTrigger: {
+            trigger: '.last-cta__ani',
+            start: 'top 80%',
         }
     });
     gsap.from('.cases__ani',{
@@ -175,12 +163,198 @@ document.addEventListener('DOMContentLoaded', function(){
     });
     gsap.from('.pac__ite',{
         opacity:0,
-        y:250,
-        stagger: 0.2,
-        duration: 0.7,
+        stagger: 0.3,
+        duration: 1.5,
         scrollTrigger: {
             trigger: '.pac__ite',
             start: 'top 80%',
         }
     });
+
+    // Select all the elements
+    let elements = document.querySelectorAll('.green-gradi-until');
+
+    elements.forEach(el => {
+        // Split the text into an array of letters
+        let letters = Array.from(el.textContent);
+
+        // Create a document fragment to hold the new structure
+        let fragment = document.createDocumentFragment();
+
+        // Create a span for each letter and append it to the fragment
+        letters.forEach(letter => {
+            let span = document.createElement('span');
+            span.className = 'green-gradi-span';
+            span.textContent = letter;
+            fragment.appendChild(span);
+        });
+
+        // Clear the element's text content and append the new structure
+        el.textContent = '';
+        el.appendChild(fragment);
+
+        gsap.from(el.querySelectorAll('.green-gradi-span'), {
+            y: 100,
+            opacity: 0,
+            stagger: 0.06,
+            duration: 0.6,
+            ease: "power1.inOut",
+            scrollTrigger: {
+                trigger: el,
+                start: 'top 80%',
+            }
+        });
+    });
+
+    let elementsAside = document.querySelectorAll('.features__item');
+    elementsAside.forEach(el => {
+        gsap.from(el.querySelectorAll('.aside-ani'), {
+            y: 150,
+            opacity: 0,
+            stagger: 0.3,
+            scrollTrigger: {
+                trigger: el,
+                start: 'top 80%',
+            }
+        });
+    });
+    let generalEls = document.querySelectorAll('.general__item-cover');
+    generalEls.forEach(el => {
+        gsap.from(el.querySelectorAll('.general__item'), {
+            y: 150,
+            opacity: 0,
+            stagger: 0.3,
+            scrollTrigger: {
+                trigger: el,
+                start: 'top 60%',
+            }
+        });
+    });
+    let singleEl = document.querySelectorAll('.single__item');
+    singleEl.forEach(el => {
+        gsap.from(el, {
+            y: 150,
+            opacity: 0,
+            scrollTrigger: {
+                trigger: el,
+                start: 'top 90%',
+            }
+        });
+    });
+    if (window.innerWidth > 1100) {
+        let setupItems = gsap.utils.toArray('.setup__item');
+        // Закріплення ('pin') секції '.setup'
+        ScrollTrigger.create({
+            trigger: '.setup',
+            start: '20% top',
+            end: '100%',
+            // scrub: 3, // Збільшено час "scrub"
+            pin: true,
+            ease: "power1.out", // Add easing
+            // markers: true,
+        });
+
+        setupItems.forEach((item, index) => {
+            ScrollTrigger.create({
+                trigger: item,
+                start: 'top 0%',
+                scrub: 20,
+                end: '100%', // Збільшено відстань між start і end
+                onEnter: () => updateClasses(index),
+                onEnterBack: () => updateClasses(index),
+                // markers: true,
+                ease: "power1.out", // Add easing
+            });
+        });
+
+        function updateClasses(activeIndex) {
+            setupItems.forEach((item, index) => {
+                item.classList.toggle('setup__item-active', index === activeIndex);
+            });
+        }
+        
+        let cursor = document.querySelector('#custom-cursor');
+        let cursorClose = document.querySelector('#custom-cursor-close');
+        let gifs = document.querySelectorAll('.features__gif');
+        let isGifOpen = false;
+        gifs.forEach((gif, index) => {
+            gif.addEventListener('mouseenter', () => {
+                gsap.to(cursor, { autoAlpha: 1 }); // Show the custom cursor
+            });
+
+            gif.addEventListener('mouseleave', () => {
+                gsap.to(cursor, { autoAlpha: 0 }); // Hide the custom cursor
+            });
+
+            gif.addEventListener('mousemove', e => {
+                gsap.to(cursor, { x: e.clientX, y: e.clientY }); // Move the custom cursor
+                gsap.to(cursorClose, { x: e.clientX, y: e.clientY });
+            });
+            
+            gif.addEventListener('click', () => {
+                let parentBside = gif.closest('.features__bside');
+                let blacked = document.querySelector('.blacked');
+                let body = document.querySelector('body');
+                if (!isGifOpen) {
+                    gsap.to(cursor, { autoAlpha: 0 }); // Hide the custom cursor
+                    gsap.to(cursorClose, { autoAlpha: 1 });
+                    if(index % 2 === 0){
+                        gsap.to(parentBside, {
+                            scale: 1.6, // Zoom in by 60%
+                            ease: 'power2.out', // Smooth easing
+                            duration: 0.7, // Duration in seconds
+                            x: '50%',
+                            y: '0%',
+                            left: '-50%',
+                            top: '-50%',
+                            zIndex: 9999,
+                        });
+                    } else {
+                        gsap.to(parentBside, {
+                            scale: 1.6, // Zoom in by 60%
+                            ease: 'power2.out', // Smooth easing
+                            duration: 0.7, // Duration in seconds
+                            x: '-50%',
+                            y: '0%',
+                            left: '50%',
+                            top: '-50%',
+                            zIndex: 9999,
+                        });
+                    }
+                    gsap.to(blacked, {
+                        opacity: 0.7,
+                        duration: 0.5,
+                        zIndex: 999,
+                    });
+                    body.classList.add('stopper');
+                    gsap.to(window, {
+                        duration: 1,
+                        scrollTo: { y: gif, offsetY: 290 },
+                        ease: 'power2.out'
+                    });
+                    isGifOpen = true;
+                } else {
+                    gsap.to(cursor, { autoAlpha: 1 }); // Show the custom cursor
+                    gsap.to(cursorClose, { autoAlpha: 0 });
+                    gsap.to(parentBside, {
+                        scale: 1, // Zoom in by 60%
+                        ease: 'power2.out', // Smooth easing
+                        duration: 0.7, // Duration in seconds
+                        x: '0',
+                        y: '0',
+                        left: '0%',
+                        top: '50%',
+                        zIndex: 9999,
+                    });
+                    gsap.to(blacked, {
+                        opacity: 0,
+                        duration: 0.5,
+                        zIndex: -999,
+                    });
+                    body.classList.remove('stopper');
+                    isGifOpen = false;
+                };
+            });
+        });
+    };
 });
